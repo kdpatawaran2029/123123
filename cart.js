@@ -138,7 +138,43 @@ function renderCart() {
 
   t.textContent = '₱' + formatPrice(total);
   count.textContent = qty;
+function submitCheckout() {
+  saveCart();
 
+  var orderArr = [];
+
+  cart.forEach(function(item) {
+    var qty = Number(item.qty) || 1;
+    for (var i = 0; i < qty; i++) {
+      orderArr.push({
+        prod_name: item.name,
+        prod_price: String(item.price)
+      });
+    }
+  });
+
+  if (!orderArr.length) {
+    alert("Your cart is empty!");
+    return;
+  }
+
+  var name = document.querySelector('[name="cust_name"]').value;
+  var addr = document.querySelector('[name="cust_addr"]').value;
+  var email = document.querySelector('[name="cust_email"]').value;
+
+  if (!name || !addr || !email) {
+    alert("Please fill out all fields!");
+    return;
+  }
+
+  var url = "http://52.74.133.173/cs3/checkout.php" +
+    "?cust_name=" + encodeURIComponent(name) +
+    "&cust_addr=" + encodeURIComponent(addr) +
+    "&cust_email=" + encodeURIComponent(email) +
+    "&cust_order=" + encodeURIComponent(JSON.stringify(orderArr));
+
+  window.location.href = url;
+}
   saveCart();
 }
 renderCart();
