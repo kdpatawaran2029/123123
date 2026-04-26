@@ -77,6 +77,12 @@ function saveCart() {
 }
 function prepareOrder() {
   saveCart();
+  var hidden = document.getElementById('cust_order');
+  if (!hidden || hidden.value === "" || hidden.value === "[]") {
+    alert("Your cart is empty!");
+    return false;
+  }
+  return true;
 }
 
 function renderCart() {
